@@ -4,6 +4,10 @@ All notable changes to this project are recorded here. The format follows [Keep 
 
 ## Unreleased
 
+### Added
+
+- A copy-and-paste installation prompt in the README, a profile-aware agent installation guide with approval checkpoints, and a next-steps note displayed by the Hermes installer.
+
 ## 0.1.0 - 2026-11-18
 
 ### Added

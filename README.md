@@ -37,10 +37,36 @@ Herdr TUI panes are left alone. Herdr TUI detects Hermes on its own, so the two 
 
 ## Install
 
-Hermes plugins are installed and enabled per profile. For the default profile:
+### Ask Hermes to install it
+
+You can let Hermes handle the commands. Open Hermes on the computer where you run your sessions and paste this message:
+
+```text
+Help me install hermes-program-status so my Hermes sessions show their
+status in the Herdr desktop and phone apps.
+
+Read the installation guide first:
+https://raw.githubusercontent.com/sicruse/hermes-program-status/main/INSTALL_FOR_AGENTS.md
+
+Check that my setup is supported. Ask which profiles I want to use,
+show me what you would change, and wait for my approval before making
+changes. Keep my existing instructions and settings. Ask before disabling
+another plugin, and do not restart any service.
+
+Afterward, check that the plugin is enabled in each profile I chose.
+Help me test a new Hermes session in Herdr, and tell me what passed
+and what still needs checking. If you cannot read the guide, stop and
+ask me for it rather than guessing.
+```
+
+Your agent will check compatibility and guide you through the test. It should leave other profiles alone. The [installation guide](INSTALL_FOR_AGENTS.md) lists the steps and approval checkpoints.
+
+### Install from the command line
+
+Hermes plugins are installed and enabled per profile. To target the default profile explicitly:
 
 ```sh
-hermes plugins install sicruse/hermes-program-status --enable
+hermes -p default plugins install sicruse/hermes-program-status --enable
 ```
 
 For each named profile whose sessions you want to see, run the same command with `-p`:
@@ -83,7 +109,7 @@ Sessions from messaging platforms, cron jobs and unregistered terminals never ma
 ## What it reads and writes
 
 - Reads `<HERMES_HOME>/terminal-sessions/tty-*` for the default home and each profile home.
-- Writes one small JSON file per live CLI session to `<HERMES_HOME>/plugin-data/hermes-program-status/`, and removes it on exit.
+- Writes one small JSON file per live CLI session to `<Hermes root>/plugin-data/hermes-program-status/` (normally `~/.hermes/plugin-data/hermes-program-status/`, shared across profiles), and removes it on exit.
 - Writes OSC 7501 sequences, about 30 bytes each, to tty devices that a live Hermes CLI of the same user registered.
 - No network access, no subprocesses, no credentials, no telemetry. Failures are silent and never affect the agent.
 
@@ -96,7 +122,7 @@ All optional, read from the environment of the Hermes process.
 | `HERMES_PROGRAM_STATUS_TERMINALS` | `herdr` | `herdr` reports only in herdr-core terminals. `any` reports in every terminal; use it only with terminals that ignore unknown OSC sequences. |
 | `HERMES_PROGRAM_STATUS_APP` | `hermes` | App name sent with each report. Empty sends none. |
 | `HERMES_PROGRAM_STATUS_LOG` | unset | Path of a JSON-lines trace of every report, for debugging. |
-| `HERMES_PROGRAM_STATUS_REGISTRY` | `<HERMES_HOME>/plugin-data/hermes-program-status` | Registry directory. |
+| `HERMES_PROGRAM_STATUS_REGISTRY` | `<Hermes root>/plugin-data/hermes-program-status` | Shared registry directory (normally under `~/.hermes`, not the active profile home). |
 | `HERMES_PROGRAM_STATUS_HOMES` | default home plus every profile home | Hermes homes to search for terminal-session files, separated by `:`. |
 
 ## Limitations
